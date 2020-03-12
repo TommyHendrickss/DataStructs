@@ -30,7 +30,7 @@ void append(Node *&head, Node *&tail, int x){
 
 }
 
-// dont really need this but its her anyways. 
+
 void prepend(Node *&head, Node *&tail, int x){
     Node *temp = new Node;
 
@@ -60,38 +60,81 @@ void appendInOrder(Node *&head, Node *&tail, int x){
     node = head;
 
     temp->Data = x;
-    temp->Next = NULL;
 
+    // if the list is empty
     if(head == NULL){
         head = temp;
         tail = temp;
         head->Prev = NULL;
+        head->Next = NULL;
         temp = NULL;
-    }
-
-    if(node == NULL){
-        cout << "Your list is empty. Please add a node to it first...\n";
         return;
     }
-    while(node != NULL && node->Data < x){
+    
+    // if the list is only one node long it checks if it should insert at the beginning or the end.
+        if(node->Data >= x){
+            temp->Next = head;
+            temp->Prev = NULL;
+            head->Prev = temp;
+            head = temp;
+            return;
+        }
+        
+
+    // This goes through the list till it finds the point of insertion
+
+    while(node->Next != NULL && node->Next->Data < x){
         node = node->Next;
     }
     
-    // if node == head
+    cout << node->Data << endl;
 
     // if node == tail
+    if(node == tail){
+        append(head, tail, x);
+    }
 
     // putting it where it belongs in the list
+    else{
+        node->Next->Prev = temp;
+        temp->Prev = node;
+        temp->Next = node->Next;
+        node->Next = temp;
+
+    }
+
+    
+}
+
+
+void deleteNode(Node *&head, Node *&tail, int x){
+    
+    Node *node = head;
+
+    if(head == NULL){
+        cout << "Your list is empty. Try adding a node or two\n";
+        return;
+    }
+    else if(head->Next == NULL){
+        cout << "You only have one node in the list so you cant delete it\n";
+        return;
+    }
+
+    while(node != NULL){
+        if(node->Data == x){
+            break;
+        }
+    }
 }
 
 
 void fillList(Node*&head, Node*&tail){
-    int temp = 0;
+    int temp;
 
     for(int i=0; i<10 ;i++){
-        temp += 2;
+        temp = ( rand()%100 ) +1;
 
-        append(head, tail, temp);
+        appendInOrder(head, tail, temp);
     }
 }
 
@@ -128,22 +171,25 @@ int main(){
 
 
     do{
-        cout << "1.Display | 2.Append | 3.Prepend | 4.Append Ten Node\n";
+        cout << "1.Display | 2.Append Ten Nodes | 3.Delete | 4.Append in Order\n";
         cin >> c;
 
         if(c==1){
             display(head);
         }
-        if(c==2){
-        cout << "What number would you like to append?\n";
-        cin >> c;
-        appendInOrder(head, tail, c);
+        else if(c==2){
+            fillList(head, tail);
+            
         }
         else if(c==3){
-
+            cout << "What number would you like to delete?\n";
+            cin >> c;   
+            append(head,tail,c);
         }
         else if(c==4){
-            fillList(head, tail);
+            cout << "What number would you like to insert?\n";
+            cin >> c;
+            appendInOrder(head, tail, c);
         }
     }while(true);
 
