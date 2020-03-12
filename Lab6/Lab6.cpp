@@ -27,8 +27,8 @@ void append(Node *&head, Node *&tail, int x){
         temp->Prev = tail;
         tail = temp;
     }
-
 }
+
 
 
 void prepend(Node *&head, Node *&tail, int x){
@@ -50,7 +50,6 @@ void prepend(Node *&head, Node *&tail, int x){
         temp->Prev = NULL;
         head = temp;
     }
-    
 }
 
 
@@ -100,10 +99,7 @@ void appendInOrder(Node *&head, Node *&tail, int x){
         temp->Prev = node;
         temp->Next = node->Next;
         node->Next = temp;
-
     }
-
-    
 }
 
 
@@ -125,6 +121,19 @@ void deleteNode(Node *&head, Node *&tail, int x){
             break;
         }
     }
+
+    // if your deleting the head
+    if(node == head){
+        node->Next->Prev = NULL;
+        head = node->Next;
+        delete node;
+    }
+    // if your deleting the tail
+    else if(node == tail){
+
+    }
+    // if your deleting anyhting else
+
 }
 
 
@@ -169,6 +178,7 @@ int main(){
     head = NULL;
     tail = head;
 
+    append(head, tail, 10);
 
     do{
         cout << "1.Display | 2.Append Ten Nodes | 3.Delete | 4.Append in Order\n";
@@ -184,7 +194,7 @@ int main(){
         else if(c==3){
             cout << "What number would you like to delete?\n";
             cin >> c;   
-            append(head,tail,c);
+            deleteNode(head,tail,c);
         }
         else if(c==4){
             cout << "What number would you like to insert?\n";
